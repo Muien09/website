@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Book Your Movie Tickets</h1>
+        <form action="{{ url_for('book_tickets') }}" method="POST">
+            <input type="text" name="movie_name" placeholder="Enter movie name" required>
+            <input type="text" name="date" placeholder="Select date" required>
+            <input type="text" name="time" placeholder="Select showtime" required>
+            <input type="number" name="seats" placeholder="Number of seats" required>
+            <button type="submit" class="btn">Book Tickets</button>
+        </form>
+    </div>
+</body>
+</html>

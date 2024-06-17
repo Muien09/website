@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Food Item</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Food Item</h1>
+        <form action="{{ url_for('add_food_item') }}" method="POST">
+            <input type="text" name="name" placeholder="Enter food item name" required>
+            <input type="number" name="price" placeholder="Enter price" required>
+            <button type="submit" class="btn">Add Item</button>
+        </form>
+    </div>
+</body>
+</html>
+
