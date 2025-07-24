@@ -4,7 +4,7 @@ from app import db, bcrypt, jwt
 from app.models import User, Movie, Booking, FoodItem, Order
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from functools import wraps
-from app.utils import send_email
+from app.utils import send_email, admin_required
 
 bp = Blueprint('main', __name__)
 
@@ -40,21 +40,43 @@ def login():
 # Admin routes
 @bp.route('/admin/movies', methods=['POST'])
 @jwt_required()
+@admin_required
 def add_movie():
-    # Add movie logic here
-    pass
+    data = request.get_json()
+    if not data or 'title' not in data or 'genre' not in data or 'showtimes' not in data:
+        return jsonify({'message': 'Invalid request'}), 400
+
+    new_movie = Movie(
+        title=data['title'],
+        genre=data['genre'],
+        showtimes=data['showtimes']
+    )
+    db.session.add(new_movie)
+    db.session.commit()
+    return jsonify({'message': 'Movie added successfully'}), 201
 
 @bp.route('/admin/food-items', methods=['POST'])
 @jwt_required()
+@admin_required
 def add_food_item():
-    # Add food item logic here
-    pass
+    data = request.get_json()
+    if not data or 'name' not in data or 'price' not in data:
+        return jsonify({'message': 'Invalid request'}), 400
+
+    new_food_item = FoodItem(
+        name=data['name'],
+        price=data['price']
+    )
+    db.session.add(new_food_item)
+    db.session.commit()
+    return jsonify({'message': 'Food item added successfully'}), 201
 
 @bp.route('/admin/bookings', methods=['GET'])
 @jwt_required()
+@admin_required
 def get_bookings():
-    # Get bookings logic here
-    pass
+    bookings = Booking.query.all()
+    return jsonify([{'id': b.id, 'user_id': b.user_id, 'movie_id': b.movie_id, 'seats': b.seats, 'showtime': b.showtime, 'total_price': b.total_price} for b in bookings]), 200
 
 # Movie booking route
 @bp.route('/booking', methods=['GET'])

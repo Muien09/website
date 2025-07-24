@@ -10,9 +10,7 @@ jwt = JWTManager()
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = '59c7a3a05300b593e0d9fba858063a54'  # Updated secret key
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-    #app.config['SENDGRID_API_KEY'] = os.getenv('SENDGRID_API_KEY')
+    app.config.from_object('config.Config')
 
     db.init_app(app)
     bcrypt.init_app(app)
